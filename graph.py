@@ -11,9 +11,10 @@ class NotVertexOfThisEdgeError(ValueError):
 
 
 class Edge:
-    def __init__(self, first_node, second_node):
+    def __init__(self, first_node, second_node, weight=None):
         self.first_node = first_node
         self.second_node = second_node
+        self.weight = weight
 
     def is_vertex(self, node: Node) -> bool:
         return node == self.first_node or node == self.second_node
@@ -38,15 +39,18 @@ class Graph:
     def has_node(self, node) -> bool:
         return node in self._nodes
 
+    def nodes(self) -> list:
+        return self._nodes
+
     def add_edge(self, edge):
         if self.has_node(edge.second_node) and self.has_node(edge.first_node):
             self._edges.append(edge)
 
+    def remove_edge(self, edge: Edge):
+        self._edges.remove(edge)
+
     def edges(self) -> list:
         return self._edges
-
-    def nodes(self) -> list:
-        return self._nodes
 
     def neighbors(self, node: Node) -> list:
         neighbors_list = list()
