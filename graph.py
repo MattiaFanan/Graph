@@ -1,10 +1,35 @@
+class Node(object):
+    def __init__(self, label=None):
+        self.label = label
+
+
+class NotVertexOfThisEdgeError(ValueError):
+    pass
+
+
+class Edge:
+    def __init__(self, first_node, second_node):
+        self.first_node = first_node
+        self.second_node = second_node
+
+    def is_vertex(self, node: Node) -> bool:
+        return node == self.first_node or node == self.second_node
+
+    def opposite(self, node: Node) -> Node:
+        if not self.is_vertex(node):
+            raise NotVertexOfThisEdgeError("searched for the opposite vertex of a vertex that is not in this edge")
+        if node == self.first_node:
+            return self.second_node
+        return self.first_node
+
+
 class Graph:
 
     def __init__(self):
         self._edges = list()
         self._nodes = list()
 
-    def add_node(self, node):
+    def add_node(self, node: Node):
         self._nodes.append(node)
 
     def has_node(self, node) -> bool:
@@ -20,13 +45,11 @@ class Graph:
     def nodes(self) -> list:
         return self._nodes
 
-
-class Node(object):
-    def __init__(self, label=None):
-        self.label = label
-
-
-class Edge:
-    def __init__(self, first_node, second_node):
-        self.first_node = first_node
-        self.second_node = second_node
+    def neighbors(self, node: Node) -> list:
+        neighbors_list = list()
+        for edge in self.edges():
+            try:
+                neighbors_list.append(edge.opposite(node))
+            except NotVertexOfThisEdgeError:
+                pass
+        return neighbors_list
