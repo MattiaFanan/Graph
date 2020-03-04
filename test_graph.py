@@ -11,6 +11,7 @@ class TestGraph(TestCase):
     edge13 = Edge(nodes[0], nodes[2])
     edges = [edge12, edge13]
 
+    # TODO change to pytest to delete setup methods at the start of tests
     def setUp(self) -> None:
         self.graph = Graph()
 
@@ -37,6 +38,16 @@ class TestGraph(TestCase):
         for node in TestGraph.nodes:
             assert node in graph_nodes, "inserted but not retrieved"
 
+    def test_remove_node(self):
+        self._complete_setup()
+        node_to_remove = TestGraph.node3
+
+        self.graph.remove_node(node_to_remove)
+
+        self.assertFalse(self.graph.has_node(node_to_remove))
+        for edge in self.graph.edges():
+            self.assertFalse(edge.has_vertex(node_to_remove))
+
     def test_has_node(self):
         node1 = TestGraph.node1
         assert not self.graph.has_node(node1)
@@ -56,15 +67,18 @@ class TestGraph(TestCase):
 
     def test_remove_edge(self):
         self._complete_setup()
+        edge_to_remove = TestGraph.edge13
 
-        self.graph.remove_edge(TestGraph.edge13)
-        self.assertFalse(TestGraph.edge13 in self.graph.edges())
+        self.graph.remove_edge(edge_to_remove)
+        self.assertFalse(edge_to_remove in self.graph.edges())
 
     def test_has_edge(self):
         self._complete_setup()
+        edge_not_in = Edge(TestGraph.node2, TestGraph.node3)
+        edge_in = TestGraph.edge13
 
-        self.assertTrue(self.graph.has_edge(TestGraph.edge13))
-        self.assertFalse(self.graph.has_edge(Edge(TestGraph.node1,TestGraph.node3)))
+        self.assertTrue(self.graph.has_edge(edge_in))
+        self.assertFalse(self.graph.has_edge(edge_not_in))
 
     def test_get_neighbors(self):
         self._complete_setup()

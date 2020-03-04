@@ -16,8 +16,8 @@ class TestEdge(TestCase):
                          "edge don't return node3 as opposite of node1 in edge13")
 
     def test_is_vertex(self):
-        self.assertTrue(self.edge.is_vertex(TestGraph.node1), "Node1 should be vertex of edge13")
-        self.assertFalse(self.edge.is_vertex(TestGraph.node2), "Node2 shouldn't be vertex of edge13")
+        self.assertTrue(self.edge.has_vertex(TestGraph.node1), "Node1 should be vertex of edge13")
+        self.assertFalse(self.edge.has_vertex(TestGraph.node2), "Node2 shouldn't be vertex of edge13")
 
     def test_equals_reflexivity(self):
         self.assertTrue(TestGraph.edge13 == TestGraph.edge13)

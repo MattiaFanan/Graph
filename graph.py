@@ -16,11 +16,11 @@ class Edge:
         self.second_node = second_node
         self.weight = weight
 
-    def is_vertex(self, node: Node) -> bool:
+    def has_vertex(self, node: Node) -> bool:
         return node == self.first_node or node == self.second_node
 
     def opposite(self, node: Node) -> Node:
-        if not self.is_vertex(node):
+        if not self.has_vertex(node):
             raise NotVertexOfThisEdgeError("searched for the opposite vertex of a vertex that is not in this edge")
         if node == self.first_node:
             return self.second_node
@@ -41,6 +41,12 @@ class Graph:
 
     def add_node(self, node: Node):
         self._nodes.append(node)
+
+    def remove_node(self,node:Node):
+        self._nodes.remove(node)
+        for edge in self._edges:
+            if edge.has_vertex(node):
+                self._edges.remove(edge)
 
     def has_node(self, node) -> bool:
         return node in self._nodes
