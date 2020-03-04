@@ -26,6 +26,12 @@ class Edge:
             return self.second_node
         return self.first_node
 
+    def __eq__(self, other):
+        return isinstance(other, Edge) and other.first_node == self.first_node and other.second_node == self.second_node
+
+    def __ne__(self, other):
+        return not self == other
+
 
 class Graph:
 
