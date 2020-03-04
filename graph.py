@@ -49,6 +49,9 @@ class Graph:
     def remove_edge(self, edge: Edge):
         self._edges.remove(edge)
 
+    def has_edge(self, edge: Edge) -> bool:
+        return edge in self._edges
+
     def edges(self) -> list:
         return self._edges
 
