@@ -1,3 +1,6 @@
+__author__ = "Mattia Fanan"
+
+
 class Node(object):
     def __init__(self, label=None):
         self.label = label

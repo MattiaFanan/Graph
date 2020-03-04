@@ -1,6 +1,8 @@
 from unittest import TestCase
 from graph import *
 
+__author__ = "Mattia Fanan"
+
 
 class TestGraph(TestCase):
     node1 = Node("node1")
@@ -65,6 +67,3 @@ class TestGraph(TestCase):
 
         neighbors = self.graph.neighbors(TestGraph.node3)
         assert len(neighbors) == 1 and neighbors[0] == TestGraph.node1
-
-
-

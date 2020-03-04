@@ -1,5 +1,6 @@
 from unittest import TestCase
 from test_graph import TestGraph
+__author__ = "Mattia Fanan"
 
 
 class TestEdge(TestCase):
