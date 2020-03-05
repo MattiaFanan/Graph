@@ -1,7 +1,5 @@
 __author__ = "Mattia Fanan"
 
-from collections import KeysView
-
 
 class Node(object):
     """

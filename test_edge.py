@@ -6,7 +6,7 @@ __author__ = "Mattia Fanan"
 
 
 class TestEdge(TestCase):
-    equivalent_edge13 = Edge(TestGraph.node3, TestGraph.node1)
+    equivalent_edge13 = Edge(TestGraph.node3, TestGraph.node1, TestGraph.edge13.weight)
 
     def setUp(self) -> None:
         self.edge = TestGraph.edge13
@@ -22,21 +22,24 @@ class TestEdge(TestCase):
         self.assertFalse(self.edge.has_vertex(TestGraph.node2), "Node2 shouldn't be vertex of edge13")
 
     def test_equals_reflexivity(self):
-        self.assertTrue(TestGraph.edge13 == TestGraph.edge13)
+        self.assertTrue(self.edge == self.edge)
 
     def test_equals_symmetry(self):
-        equivalent_edge13 = TestEdge.equivalent_edge13
+        equivalent_edge = TestEdge.equivalent_edge13
 
-        self.assertTrue(TestGraph.edge13 == equivalent_edge13 and equivalent_edge13 == TestGraph.edge13)
+        self.assertTrue(self.edge == equivalent_edge and equivalent_edge == self.edge)
 
     def test_equals_transitivity(self):
-        equivalent_edge13 = TestEdge.equivalent_edge13
-        equivalent2_edge13 = Edge(TestGraph.node1, TestGraph.node3)
+        equivalent_edge = TestEdge.equivalent_edge13
+        equivalent_edge2 = Edge(TestGraph.node1, TestGraph.node3)
 
-        if TestGraph.edge13 == equivalent_edge13 and equivalent_edge13 == equivalent2_edge13:
-            self.assertTrue(TestGraph.edge13 == equivalent2_edge13)
+        if self.edge == equivalent_edge and equivalent_edge == equivalent_edge2:
+            self.assertTrue(self.edge == equivalent_edge2)
 
     def test_hash(self):
         equivalent_edge13 = TestEdge.equivalent_edge13
 
         self.assertTrue(hash(equivalent_edge13) == hash(TestGraph.edge13))
+
+    def test_false_equals(self):
+        self.assertFalse(self.edge == Edge(self.edge.first_node, self.edge.second_node, self.edge.weight + 5))
