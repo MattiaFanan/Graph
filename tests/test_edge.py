@@ -1,5 +1,5 @@
 from unittest import TestCase
-from test_graph import TestGraph
+from tests.test_graph import TestGraph
 from graph import Edge
 
 __author__ = "Mattia Fanan"
