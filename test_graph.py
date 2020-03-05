@@ -7,8 +7,8 @@ class TestGraph(TestCase):
     node2 = Node("node2")
     node3 = Node("node3")
     nodes = [node1, node2, node3]
-    edge12 = Edge(nodes[0], nodes[1])
-    edge13 = Edge(nodes[0], nodes[2])
+    edge12 = Edge(nodes[0], nodes[1], 4)
+    edge13 = Edge(nodes[0], nodes[2], 6)
     edges = [edge12, edge13]
 
     # TODO change to pytest to delete setup methods at the start of tests
@@ -83,11 +83,12 @@ class TestGraph(TestCase):
     def test_get_neighbors(self):
         self._complete_setup()
 
-        for node in self.graph.neighbors(TestGraph.node1):
-            assert node == TestGraph.node2 or node == TestGraph.node3
+        neighbors = self.graph.neighbors(TestGraph.node1)
+        self.assertTrue(len(neighbors) == 2 and neighbors[TestGraph.node2] == TestGraph.edge12.weight
+                        and neighbors[TestGraph.node3] == TestGraph.edge13.weight)
 
         neighbors = self.graph.neighbors(TestGraph.node2)
-        assert len(neighbors) == 1 and neighbors[0] == TestGraph.node1
+        self.assertTrue(len(neighbors) == 1 and neighbors[TestGraph.node1] == TestGraph.edge12.weight)
 
         neighbors = self.graph.neighbors(TestGraph.node3)
-        assert len(neighbors) == 1 and neighbors[0] == TestGraph.node1
+        self.assertTrue(len(neighbors) == 1 and neighbors[TestGraph.node1] == TestGraph.edge13.weight)
