@@ -80,11 +80,7 @@ class Graph:
 
     @property
     def edges(self) -> set:
-        edges_set = set()
-        for node, neighbors in self._adjacency_list.items():
-            for neighbor in neighbors:
-                edges_set.add(Edge(node, neighbor))
-        return edges_set
+        return {Edge(node, neighbor) for node, neighbors in self._adjacency_list.items() for neighbor in neighbors}
 
     def neighbors(self, node: Node) -> list:
         return self._adjacency_list[node]
