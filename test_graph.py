@@ -30,7 +30,7 @@ class TestGraph(TestCase):
     def test_get_nodes(self):
         self._add_nodes_setup()
 
-        graph_nodes = self.graph.nodes()
+        graph_nodes = self.graph.nodes
         # retrieves only the inserted
         for node in graph_nodes:
             assert node in TestGraph.nodes, "retrieved but not inserted"
@@ -45,7 +45,7 @@ class TestGraph(TestCase):
         self.graph.remove_node(node_to_remove)
 
         self.assertFalse(self.graph.has_node(node_to_remove))
-        for edge in self.graph.edges():
+        for edge in self.graph.edges:
             self.assertFalse(edge.has_vertex(node_to_remove))
 
     def test_has_node(self):
@@ -57,7 +57,7 @@ class TestGraph(TestCase):
     def test_get_edges(self):
         self._complete_setup()
 
-        graph_edges = self.graph.edges()
+        graph_edges = self.graph.edges
         # retrieves only the inserted
         for edge in graph_edges:
             assert edge in TestGraph.edges
@@ -70,7 +70,7 @@ class TestGraph(TestCase):
         edge_to_remove = TestGraph.edge13
 
         self.graph.remove_edge(edge_to_remove)
-        self.assertFalse(edge_to_remove in self.graph.edges())
+        self.assertFalse(edge_to_remove in self.graph.edges)
 
     def test_has_edge(self):
         self._complete_setup()

@@ -6,6 +6,8 @@ __author__ = "Mattia Fanan"
 
 
 class TestEdge(TestCase):
+    equivalent_edge13 = Edge(TestGraph.node3, TestGraph.node1)
+
     def setUp(self) -> None:
         self.edge = TestGraph.edge13
 
@@ -23,11 +25,18 @@ class TestEdge(TestCase):
         self.assertTrue(TestGraph.edge13 == TestGraph.edge13)
 
     def test_equals_symmetry(self):
-        equivalent_edge13 = Edge(TestGraph.node1, TestGraph.node3)
+        equivalent_edge13 = TestEdge.equivalent_edge13
+
         self.assertTrue(TestGraph.edge13 == equivalent_edge13 and equivalent_edge13 == TestGraph.edge13)
 
     def test_equals_transitivity(self):
-        equivalent_edge13 = Edge(TestGraph.node1, TestGraph.node3)
+        equivalent_edge13 = TestEdge.equivalent_edge13
         equivalent2_edge13 = Edge(TestGraph.node1, TestGraph.node3)
+
         if TestGraph.edge13 == equivalent_edge13 and equivalent_edge13 == equivalent2_edge13:
             self.assertTrue(TestGraph.edge13 == equivalent2_edge13)
+
+    def test_hash(self):
+        equivalent_edge13 = TestEdge.equivalent_edge13
+
+        self.assertTrue(hash(equivalent_edge13) == hash(TestGraph.edge13))

@@ -1,9 +1,14 @@
 __author__ = "Mattia Fanan"
 
+from collections import KeysView
+
 
 class Node(object):
     def __init__(self, label=None):
         self.label = label
+
+    def __hash__(self):
+        return super().__hash__()
 
 
 class NotVertexOfThisEdgeError(ValueError):
@@ -27,51 +32,59 @@ class Edge:
         return self.first_node
 
     def __eq__(self, other):
-        return isinstance(other, Edge) and other.first_node == self.first_node and other.second_node == self.second_node
+        undirected_edge_equivalence = (other.first_node == self.first_node and other.second_node == self.second_node) \
+                                      or (other.first_node == self.second_node and other.second_node == self.first_node)
+        return isinstance(other, Edge) and undirected_edge_equivalence
 
     def __ne__(self, other):
         return not self == other
+
+    def __hash__(self):
+        return hash(self.first_node) + hash(self.second_node)
 
 
 class Graph:
 
     def __init__(self):
-        self._edges = list()
-        self._nodes = list()
+        self._adjacency_list = dict()
 
     def add_node(self, node: Node):
-        self._nodes.append(node)
+        # initialize adjacency list as node + empty list of neighbor
+        self._adjacency_list[node] = list()
 
-    def remove_node(self,node:Node):
-        self._nodes.remove(node)
-        for edge in self._edges:
-            if edge.has_vertex(node):
-                self._edges.remove(edge)
+    def remove_node(self, node: Node):
+        for neighbors in self._adjacency_list.values():
+            if node in neighbors:
+                neighbors.remove(node)
+        self._adjacency_list.pop(node)
 
-    def has_node(self, node) -> bool:
-        return node in self._nodes
+    def has_node(self, node: Node) -> bool:
+        return node in self._adjacency_list.keys()
 
-    def nodes(self) -> list:
-        return self._nodes
+    @property
+    def nodes(self) -> set:
+        return set(self._adjacency_list.keys())
 
     def add_edge(self, edge):
-        if self.has_node(edge.second_node) and self.has_node(edge.first_node):
-            self._edges.append(edge)
+        """adds an edge from one node to the other and reverse"""
+        if self.has_node(edge.second_node) and self.has_node(edge.first_node) and not self.has_edge(edge):
+            self._adjacency_list[edge.second_node].append(edge.first_node)
+            self._adjacency_list[edge.first_node].append(edge.second_node)
 
     def remove_edge(self, edge: Edge):
-        self._edges.remove(edge)
+        self._adjacency_list[edge.second_node].remove(edge.first_node)
+        self._adjacency_list[edge.first_node].remove(edge.second_node)
 
     def has_edge(self, edge: Edge) -> bool:
-        return edge in self._edges
+        return edge.first_node in self._adjacency_list[edge.second_node]
 
-    def edges(self) -> list:
-        return self._edges
+    @property
+    def edges(self) -> set:
+        edges_set = set()
+        for node, neighbors in self._adjacency_list.items():
+            for neighbor in neighbors:
+                edges_set.add(Edge(node, neighbor))
+        return edges_set
 
     def neighbors(self, node: Node) -> list:
-        neighbors_list = list()
-        for edge in self.edges():
-            try:
-                neighbors_list.append(edge.opposite(node))
-            except NotVertexOfThisEdgeError:
-                pass
-        return neighbors_list
+        return self._adjacency_list[node]
